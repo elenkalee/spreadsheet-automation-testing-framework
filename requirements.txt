@@ -4,3 +4,4 @@ selenium==4.43.0
 webdriver-manager==4.0.2
 python-dotenv==1.2.2
 allure-pytest==2.16.0
+ruff==0.15.12
