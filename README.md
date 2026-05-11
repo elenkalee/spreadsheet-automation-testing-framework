@@ -50,6 +50,8 @@ python -c "import pytest, requests, selenium, webdriver_manager, dotenv; print('
 python -m pytest
 ```
 
+Pytest is configured to save Allure result files to `allure-results/`.
+
 ## Pytest Markers
 
 Available markers are configured in `pytest.ini`:
@@ -69,6 +71,63 @@ python -m pytest -m smoke
 ```
 
 At the initial stage, marker commands may collect zero tests until test files are added.
+
+## Allure Reports
+
+The Python adapter is installed from `requirements.txt`:
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+Test runs automatically generate Allure result files in `allure-results/` because `pytest.ini` contains:
+
+```ini
+addopts = --alluredir=allure-results
+```
+
+Run tests and open the report:
+
+```powershell
+python -m pytest
+allure serve allure-results
+```
+
+To use `allure serve`, install Allure Commandline separately and make sure the `allure` command is available in PATH.
+
+Check Java first:
+
+```powershell
+java -version
+```
+
+If Java is not installed, install JDK 17:
+
+```powershell
+winget install EclipseAdoptium.Temurin.17.JDK
+```
+
+Install Allure Commandline with Scoop:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+irm get.scoop.sh | iex
+scoop install allure
+```
+
+Or install Allure Commandline with npm if Node.js is already installed:
+
+```powershell
+npm install -g allure-commandline
+```
+
+Check that Allure is available:
+
+```powershell
+allure --version
+```
+
+After installing Java or Allure Commandline, restart PowerShell or the PyCharm terminal if the command is not found.
 
 ## Common Fixtures
 
