@@ -129,6 +129,24 @@ allure --version
 
 After installing Java or Allure Commandline, restart PowerShell or the PyCharm terminal if the command is not found.
 
+## GitHub Actions
+
+CI is configured in `.github/workflows/ci.yml`.
+
+The workflow runs on:
+
+- push to any branch
+- pull request to `master`
+- manual run from the GitHub Actions tab
+
+CI steps:
+
+- install Python 3.11
+- install dependencies from `requirements.txt`
+- run Ruff
+- run all tests with `python -m pytest`
+- upload `allure-results/` as a workflow artifact
+
 ## Common Fixtures
 
 Common pytest fixtures are defined in `conftest.py` and are available in tests without explicit imports.
