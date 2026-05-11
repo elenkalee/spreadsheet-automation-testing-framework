@@ -68,3 +68,48 @@ python -m pytest -m ui
 python -m pytest -m smoke
 ```
 
+At the initial stage, marker commands may collect zero tests until test files are added.
+
+## Common Fixtures
+
+Common pytest fixtures are defined in `conftest.py` and are available in tests without explicit imports.
+
+- `base_url` - base URL of the tested EtherCalc instance. It is loaded from `BASE_URL` in `.env`; default value is `https://ethercalc.net`.
+- `api_client` - configured `EtherCalcClient` instance for API tests.
+- `generated_sheet_id` - unique test sheet id generated with `uuid`, so tests do not conflict with each other.
+- `browser` - Selenium Chrome browser instance. The browser is opened before a UI test and closed after it.
+
+Example:
+
+```python
+def test_open_sheet(browser, base_url, generated_sheet_id):
+    browser.get(f"{base_url}/{generated_sheet_id}")
+
+    assert generated_sheet_id in browser.current_url
+```
+
+## API Client
+
+API tests should use `EtherCalcClient` through the `api_client` fixture instead of calling `requests` directly in tests.
+
+Available client methods (from https://github.com/audreyt/ethercalc/blob/main/API.md):
+
+- `create_page(sheet_id)`
+- `get_page_content(sheet_id)`
+- `get_cells(sheet_id)`
+- `get_cell(sheet_id, cell)`
+- `export_csv(sheet_id)`
+- `export_json(sheet_id)`
+- `export_html(sheet_id)`
+
+Example:
+
+```python
+def test_export_csv(api_client, generated_sheet_id):
+    api_client.create_page(generated_sheet_id)
+
+    csv_content = api_client.export_csv(generated_sheet_id)
+
+    assert isinstance(csv_content, str)
+```
+
