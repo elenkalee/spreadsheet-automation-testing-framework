@@ -15,7 +15,7 @@ class EtherCalcClient(APIClient):
         if sheet_id is not None:
             payload["room"] = sheet_id
 
-        return self.post("_/", json=payload)
+        return self.post("_", json=payload)
 
     def get_page_content(self, sheet_id: str) -> str:
         response = self.get(f"_/{sheet_id}")
